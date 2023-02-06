@@ -37,11 +37,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="29 января 2023" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VZA-ZY-fX7">
-                                                    <rect key="frame" x="28" y="143" width="152" height="18"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="152" id="6Qw-gl-X5r"/>
-                                                        <constraint firstAttribute="height" constant="18" id="Lq2-H4-vhk"/>
-                                                    </constraints>
+                                                    <rect key="frame" x="32" y="144.5" width="366" height="15.5"/>
                                                     <fontDescription key="fontDescription" name="SFPro-Regular" family="SF Pro" pointSize="13"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -57,11 +53,12 @@
                                             <constraints>
                                                 <constraint firstItem="GPk-JZ-hAe" firstAttribute="top" secondItem="T4c-CO-l0T" secondAttribute="topMargin" id="2uV-O3-MfT"/>
                                                 <constraint firstItem="GPk-JZ-hAe" firstAttribute="trailing" secondItem="T4c-CO-l0T" secondAttribute="trailingMargin" id="3GM-VJ-O7R"/>
+                                                <constraint firstItem="VZA-ZY-fX7" firstAttribute="trailing" secondItem="1oc-8y-gaI" secondAttribute="trailing" id="Gfv-qn-ktf"/>
                                                 <constraint firstItem="1oc-8y-gaI" firstAttribute="leading" secondItem="T4c-CO-l0T" secondAttribute="leading" constant="16" id="bEB-TO-zec"/>
                                                 <constraint firstAttribute="bottom" secondItem="1oc-8y-gaI" secondAttribute="bottom" constant="4" id="bWR-7l-xYc"/>
                                                 <constraint firstItem="1oc-8y-gaI" firstAttribute="top" secondItem="T4c-CO-l0T" secondAttribute="top" constant="4" id="dBl-Bi-c4e"/>
-                                                <constraint firstItem="VZA-ZY-fX7" firstAttribute="leading" secondItem="T4c-CO-l0T" secondAttribute="leadingMargin" constant="8" id="iig-O5-ffT"/>
-                                                <constraint firstItem="VZA-ZY-fX7" firstAttribute="bottom" secondItem="T4c-CO-l0T" secondAttribute="bottomMargin" constant="-8" id="o42-rZ-C0M"/>
+                                                <constraint firstItem="VZA-ZY-fX7" firstAttribute="leading" secondItem="1oc-8y-gaI" secondAttribute="leadingMargin" constant="8" id="iig-O5-ffT"/>
+                                                <constraint firstItem="VZA-ZY-fX7" firstAttribute="bottom" secondItem="1oc-8y-gaI" secondAttribute="bottomMargin" constant="-8" id="o42-rZ-C0M"/>
                                                 <constraint firstAttribute="trailing" secondItem="1oc-8y-gaI" secondAttribute="trailing" constant="16" id="v29-aE-6zY"/>
                                             </constraints>
                                         </tableViewCellContentView>
