@@ -36,10 +36,14 @@
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="29 января 2023" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VZA-ZY-fX7">
-                                                    <rect key="frame" x="20" y="149" width="122.5" height="20"/>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="29 января 2023" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VZA-ZY-fX7">
+                                                    <rect key="frame" x="28" y="143" width="152" height="18"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="152" id="6Qw-gl-X5r"/>
+                                                        <constraint firstAttribute="height" constant="18" id="Lq2-H4-vhk"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="SFPro-Regular" family="SF Pro" pointSize="13"/>
+                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GPk-JZ-hAe">
@@ -56,8 +60,8 @@
                                                 <constraint firstItem="1oc-8y-gaI" firstAttribute="leading" secondItem="T4c-CO-l0T" secondAttribute="leading" constant="16" id="bEB-TO-zec"/>
                                                 <constraint firstAttribute="bottom" secondItem="1oc-8y-gaI" secondAttribute="bottom" constant="4" id="bWR-7l-xYc"/>
                                                 <constraint firstItem="1oc-8y-gaI" firstAttribute="top" secondItem="T4c-CO-l0T" secondAttribute="top" constant="4" id="dBl-Bi-c4e"/>
-                                                <constraint firstItem="VZA-ZY-fX7" firstAttribute="leading" secondItem="T4c-CO-l0T" secondAttribute="leadingMargin" id="iig-O5-ffT"/>
-                                                <constraint firstItem="VZA-ZY-fX7" firstAttribute="bottom" secondItem="T4c-CO-l0T" secondAttribute="bottomMargin" id="o42-rZ-C0M"/>
+                                                <constraint firstItem="VZA-ZY-fX7" firstAttribute="leading" secondItem="T4c-CO-l0T" secondAttribute="leadingMargin" constant="8" id="iig-O5-ffT"/>
+                                                <constraint firstItem="VZA-ZY-fX7" firstAttribute="bottom" secondItem="T4c-CO-l0T" secondAttribute="bottomMargin" constant="-8" id="o42-rZ-C0M"/>
                                                 <constraint firstAttribute="trailing" secondItem="1oc-8y-gaI" secondAttribute="trailing" constant="16" id="v29-aE-6zY"/>
                                             </constraints>
                                         </tableViewCellContentView>
