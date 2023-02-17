@@ -92,9 +92,90 @@
             </objects>
             <point key="canvasLocation" x="-124.6376811594203" y="3.3482142857142856"/>
         </scene>
+        <!--Profile View Controller-->
+        <scene sceneID="0xZ-1L-mu7">
+            <objects>
+                <viewController id="8eS-ks-iwb" customClass="ProfileViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="YkB-Cu-V5G">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="avatar" translatesAutoresizingMaskIntoConstraints="NO" id="fji-9p-zlx">
+                                <rect key="frame" x="16" y="80" width="70" height="70"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="70" id="Q5K-Oe-qLx"/>
+                                    <constraint firstAttribute="height" constant="70" id="xdo-lG-6C6"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="35"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HJr-G3-7gB">
+                                <rect key="frame" x="350" y="103" width="48" height="38"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="logout_button"/>
+                                <connections>
+                                    <action selector="didTapLogoutButton:" destination="8eS-ks-iwb" eventType="touchUpInside" id="tog-Xo-twa"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Екатерина Новикова" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dwB-uV-6uj">
+                                <rect key="frame" x="16" y="158" width="382" height="27"/>
+                                <fontDescription key="fontDescription" name="SFPro-Bold" family="SF Pro" pointSize="23"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@ekaterina_nov" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cWG-Wv-HAd">
+                                <rect key="frame" x="16" y="193" width="382" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" red="0.68235294117647061" green="0.68627450980392157" blue="0.70588235294117641" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello, world!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H1x-NL-JMq">
+                                <rect key="frame" x="16" y="217" width="382" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="kwp-TY-5Xn"/>
+                        <color key="backgroundColor" red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="H1x-NL-JMq" firstAttribute="top" secondItem="cWG-Wv-HAd" secondAttribute="bottom" constant="8" id="2DF-Oy-B53"/>
+                            <constraint firstItem="HJr-G3-7gB" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fji-9p-zlx" secondAttribute="trailing" id="367-YK-OCF"/>
+                            <constraint firstItem="kwp-TY-5Xn" firstAttribute="trailing" secondItem="dwB-uV-6uj" secondAttribute="trailing" constant="16" id="6vj-LB-SU6"/>
+                            <constraint firstItem="kwp-TY-5Xn" firstAttribute="trailing" secondItem="HJr-G3-7gB" secondAttribute="trailing" constant="16" id="7LM-pN-Q2Y"/>
+                            <constraint firstItem="fji-9p-zlx" firstAttribute="leading" secondItem="kwp-TY-5Xn" secondAttribute="leading" constant="16" id="CLY-vr-szA"/>
+                            <constraint firstItem="cWG-Wv-HAd" firstAttribute="top" secondItem="dwB-uV-6uj" secondAttribute="bottom" constant="8" id="H65-El-AQ1"/>
+                            <constraint firstItem="cWG-Wv-HAd" firstAttribute="trailing" secondItem="dwB-uV-6uj" secondAttribute="trailing" id="Hof-eX-Ock"/>
+                            <constraint firstItem="cWG-Wv-HAd" firstAttribute="leading" secondItem="dwB-uV-6uj" secondAttribute="leading" id="M0b-jV-ybB"/>
+                            <constraint firstItem="dwB-uV-6uj" firstAttribute="leading" secondItem="fji-9p-zlx" secondAttribute="leading" id="Mac-Jd-4ND"/>
+                            <constraint firstItem="fji-9p-zlx" firstAttribute="top" secondItem="kwp-TY-5Xn" secondAttribute="top" constant="32" id="Sx5-hW-Rhw"/>
+                            <constraint firstItem="H1x-NL-JMq" firstAttribute="leading" secondItem="dwB-uV-6uj" secondAttribute="leading" id="Za3-k5-1e3"/>
+                            <constraint firstItem="HJr-G3-7gB" firstAttribute="top" secondItem="kwp-TY-5Xn" secondAttribute="top" constant="55" id="ame-SU-0MI"/>
+                            <constraint firstItem="dwB-uV-6uj" firstAttribute="top" secondItem="fji-9p-zlx" secondAttribute="bottom" constant="8" id="eXx-j7-57V"/>
+                            <constraint firstItem="H1x-NL-JMq" firstAttribute="trailing" secondItem="dwB-uV-6uj" secondAttribute="trailing" id="kHG-hg-gXz"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="avatarImageView" destination="fji-9p-zlx" id="F76-16-Z1Z"/>
+                        <outlet property="descriptionLabel" destination="H1x-NL-JMq" id="2ZG-8x-oRi"/>
+                        <outlet property="loginNameLabel" destination="cWG-Wv-HAd" id="fxK-Yw-AWv"/>
+                        <outlet property="logoutButton" destination="HJr-G3-7gB" id="xf6-jO-iCW"/>
+                        <outlet property="userNameLabel" destination="dwB-uV-6uj" id="hLV-vH-Uhv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4Jx-Ub-9o1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-126.08695652173914" y="731.91964285714278"/>
+        </scene>
     </scenes>
     <resources>
         <image name="0" width="200" height="132"/>
+        <image name="avatar" width="70" height="70"/>
         <image name="like_button_on" width="42" height="42"/>
+        <image name="logout_button" width="24" height="24"/>
     </resources>
 </document>
