@@ -87,11 +87,42 @@
                     <navigationItem key="navigationItem" id="uy7-27-eSh"/>
                     <connections>
                         <outlet property="tableview" destination="m98-kx-FcM" id="EPg-T9-Fkf"/>
+                        <segue destination="ch1-uM-KA1" kind="show" identifier="ShowSingleImage" id="DXB-0E-3Zl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="785.50724637681162" y="3.3482142857142856"/>
+        </scene>
+        <!--Single Image View Controller-->
+        <scene sceneID="ghW-Mo-bq4">
+            <objects>
+                <viewController id="ch1-uM-KA1" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="tGn-we-xK9">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="2" translatesAutoresizingMaskIntoConstraints="NO" id="5DH-CY-Cb0">
+                                <rect key="frame" x="0.0" y="92" width="414" height="721"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="5c7-Nh-Ysd"/>
+                        <color key="backgroundColor" red="0.1019607843" green="0.1058823529" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="5c7-Nh-Ysd" firstAttribute="bottom" secondItem="5DH-CY-Cb0" secondAttribute="bottom" id="8Gq-US-0gJ"/>
+                            <constraint firstItem="5DH-CY-Cb0" firstAttribute="leading" secondItem="5c7-Nh-Ysd" secondAttribute="leading" id="C6t-9a-Ifz"/>
+                            <constraint firstItem="5c7-Nh-Ysd" firstAttribute="trailing" secondItem="5DH-CY-Cb0" secondAttribute="trailing" id="H2g-up-zAu"/>
+                            <constraint firstItem="5DH-CY-Cb0" firstAttribute="top" secondItem="5c7-Nh-Ysd" secondAttribute="top" id="NuW-bt-FBO"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="vc3-Oc-LeT"/>
+                    <connections>
+                        <outlet property="imageView" destination="5DH-CY-Cb0" id="8lN-vV-2Al"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7Di-KN-zhE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1707" y="3"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="CQS-mq-2j7">
@@ -220,6 +251,7 @@
     </scenes>
     <resources>
         <image name="0" width="200" height="132"/>
+        <image name="2" width="200" height="150"/>
         <image name="avatar" width="70" height="70"/>
         <image name="like_button_on" width="42" height="42"/>
         <image name="logout_button" width="24" height="24"/>

@@ -9,11 +9,11 @@ import UIKit
 
 class ProfileViewController: UIViewController {
 
-    @IBOutlet var avatarImageView: UIImageView!
-    @IBOutlet var logoutButton: UIButton!
-    @IBOutlet var userNameLabel: UILabel!
-    @IBOutlet var loginNameLabel: UILabel!
-    @IBOutlet var descriptionLabel: UILabel!
+    @IBOutlet private var avatarImageView: UIImageView!
+    @IBOutlet private var logoutButton: UIButton!
+    @IBOutlet private var userNameLabel: UILabel!
+    @IBOutlet private var loginNameLabel: UILabel!
+    @IBOutlet private var descriptionLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
