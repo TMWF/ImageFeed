@@ -22,7 +22,7 @@ class ImageListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        navigationController?.isNavigationBarHidden = true
         tableview.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
     
