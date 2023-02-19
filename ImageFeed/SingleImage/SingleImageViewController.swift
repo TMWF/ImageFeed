@@ -7,9 +7,9 @@
 
 import UIKit
 
-class SingleImageViewController: UIViewController {
-    @IBOutlet var scrollView: UIScrollView!
-    @IBOutlet var imageView: UIImageView!
+final class SingleImageViewController: UIViewController {
+    @IBOutlet private var scrollView: UIScrollView!
+    @IBOutlet private var imageView: UIImageView!
     
     var image: UIImage! {
         didSet {
@@ -27,11 +27,11 @@ class SingleImageViewController: UIViewController {
         rescaleAndCenterImageInScrollView(image: image)
     }
     
-    @IBAction func didTapBackButton(_ sender: Any) {
+    @IBAction private func didTapBackButton(_ sender: Any) {
         dismiss(animated: true)
     }
     
-    @IBAction func didTapShareButton(_ sender: UIButton) {
+    @IBAction private func didTapShareButton(_ sender: UIButton) {
         guard let image else { return }
         let vc = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         present(vc, animated: true)

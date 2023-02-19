@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController {
     private var avatarImageView: UIImageView = {
         let image = UIImage(named: "avatar")
         guard let image else { fatalError("Failed to load profile picture from assets") }
