@@ -14,10 +14,6 @@ protocol AuthViewControllerDelegate: AnyObject {
 final class AuthViewController: UIViewController {
     weak var delegate: AuthViewControllerDelegate?
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Constants.showWebViewSegueIdentifier {
             guard

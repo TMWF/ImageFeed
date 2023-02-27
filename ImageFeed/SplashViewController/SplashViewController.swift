@@ -8,20 +8,18 @@
 import UIKit
 
 final class SplashViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
-        if (!OAuth2TokenStorage().token.isEmpty) {
+        if (!OAuth2TokenStorage().token.isEmpty) && Constants.splashScreenFirstTimeAppeared {
             print("Switching inside viewDidAppear")
             switchToTabBarController()
-        } else {
+            Constants.splashScreenFirstTimeAppeared = false
+        } else if Constants.splashScreenFirstTimeAppeared {
+            print("Segue inside viewDidAppear")
             performSegue(withIdentifier: Constants.showAuthScreenSegueIdentifier, sender: nil)
+            Constants.splashScreenFirstTimeAppeared = false
         }
-        super.viewDidAppear(animated)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -44,7 +42,6 @@ final class SplashViewController: UIViewController {
             .instantiateViewController(withIdentifier: Constants.tabBarViewControllerStoryboardId)
         
         window.rootViewController = tabBarController
-        window.makeKeyAndVisible()
     }
 }
 

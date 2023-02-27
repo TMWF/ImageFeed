@@ -7,7 +7,9 @@
 
 import Foundation
 
-struct Constants {
+enum Constants {
+    static var splashScreenFirstTimeAppeared = true
+    
     static let unsplashAuthorizeURL = "https://unsplash.com/oauth/authorize"
     static let defaultBaseURL: URL = {
         guard let url = URL(string: "https://api.unsplash.com") else { fatalError("Error occured while trying to create base api URL")}
@@ -26,6 +28,4 @@ struct Constants {
     static let showAuthScreenSegueIdentifier = "showAuthScreen"
     
     static let tabBarViewControllerStoryboardId = "TabBarViewController"
-    
-    private init() { }
 }
