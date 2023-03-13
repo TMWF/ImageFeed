@@ -6,9 +6,10 @@
 //
 
 import UIKit
-import ProgressHUD
 
 final class SplashViewController: UIViewController {
+    private let authService: OAuth2ServiceProtocol = OAuth2Service()
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -48,17 +49,17 @@ final class SplashViewController: UIViewController {
 
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        ProgressHUD.show()
+        UIBlockingProgressHUD.show()
         dismiss(animated: true)
-        OAuth2Service().fetchAuthToken(code: code) { [weak self] result in
+        authService.fetchAuthToken(code: code) { [weak self] result in
             guard let self else { return }
             switch result {
             case .success(let accessToken):
                 OAuth2TokenStorage().token = accessToken
-                ProgressHUD.dismiss()
+                UIBlockingProgressHUD.dismiss()
                 self.switchToTabBarController()
             case .failure:
-                ProgressHUD.dismiss()
+                UIBlockingProgressHUD.dismiss()
 //                let alertModel = AlertModel(title: "Что-то пошло не так(", message: "Не удалось войти  в систему", buttonText: "ОК")
 //                self.alertPresenter.showAlert(alertModel)
                 print("Failed to fetch token")
