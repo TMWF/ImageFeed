@@ -52,13 +52,17 @@ final class ProfileViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-
     
+    private let profileService = ProfileService.shared
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         addSubviews()
         activateConstraints()
+        
+        guard let profile = profileService.profile else { return }
+        updateProfileDetails(profile: profile)
     }
 }
 
@@ -98,5 +102,11 @@ private extension ProfileViewController {
     
     @objc func didTapLogoutButton() {
         
+    }
+    
+    func updateProfileDetails(profile: Profile) {
+        descriptionLabel.text = profile.bio
+        loginNameLabel.text = profile.loginName
+        userNameLabel.text = profile.name
     }
 }
