@@ -10,6 +10,7 @@ import UIKit
 final class SplashViewController: UIViewController {
     private let authService: OAuth2ServiceProtocol = OAuth2Service()
     private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
     private let tokenStorage = OAuth2TokenStorage()
     
     override func viewDidAppear(_ animated: Bool) {
@@ -56,6 +57,10 @@ private extension SplashViewController {
             guard let self = self else { return }
             switch result {
             case .success:
+                guard let username = self.profileService.profile?.username else { fatalError("Unexpectedly found nil while trying to unwrap profile's username")}
+                self.profileImageService.fetchProfileImageURL(username: username) { result in
+                    
+                }
                 UIBlockingProgressHUD.dismiss()
                 self.switchToTabBarController()
             case .failure:

@@ -54,6 +54,8 @@ final class ProfileViewController: UIViewController {
     }()
     
     private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,6 +65,14 @@ final class ProfileViewController: UIViewController {
         
         guard let profile = profileService.profile else { return }
         updateProfileDetails(profile: profile)
+        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(forName: ProfileImageService.didChangeNotification, object: nil, queue: .main
+            )  { [weak self] _ in
+                guard let self else { return }
+                self.updateAvatar()
+            }
+        updateAvatar()
     }
 }
 
@@ -108,5 +118,12 @@ private extension ProfileViewController {
         descriptionLabel.text = profile.bio
         loginNameLabel.text = profile.loginName
         userNameLabel.text = profile.name
+    }
+    
+    func updateAvatar() {
+        guard
+            let profileImageURL = profileImageService.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
     }
 }

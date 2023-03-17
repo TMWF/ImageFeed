@@ -38,16 +38,6 @@ struct ProfileResult: Decodable {
         case instagramUsername = "instagram_username"
         case email, links
     }
-    
-    struct Links: Codable {
-        let linksSelf, html, photos, likes: String
-        let portfolio: String
-
-        enum CodingKeys: String, CodingKey {
-            case linksSelf = "self"
-            case html, photos, likes, portfolio
-        }
-    }
 }
 
 
