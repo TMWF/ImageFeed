@@ -27,24 +27,21 @@ final class ProfileImageService {
         request.setValue("Bearer \(tokenStorage.token)", forHTTPHeaderField: "Authorization")
         
         DispatchQueue.global().async {
-            let newTask = URLSession.shared.data(for: request) { [self] result in
+            let newTask = URLSession.shared.objectTask(for: request, completion: { [weak self] (result: Result<UserResult, Error>) in
+                guard let self else { return }
+                
                 switch result {
-                case .success(let data):
-                    do {
-                        let response = try JSONDecoder().decode(UserResult.self, from: data)
-                        let imageUrl = response.profileImage?.small
-                        avatarURL = imageUrl
-                        guard let avatarURL else { return }
-                        completion(.success(avatarURL))
-                        self.task = nil
-                        
-                        NotificationCenter.default
-                            .post(name: ProfileImageService.didChangeNotification,
-                                  object: self,
-                                  userInfo: ["URL": avatarURL])
-                    } catch {
-                        print(error)
-                    }
+                case .success(let userResult):
+                    let imageURL = userResult.profileImage?.small
+                    self.avatarURL = imageURL
+                    guard let avatarURL = self.avatarURL else { return }
+                    completion(.success(avatarURL))
+                    self.task = nil
+                    
+                    NotificationCenter.default
+                        .post(name: ProfileImageService.didChangeNotification,
+                              object: self,
+                              userInfo: ["URL": avatarURL])
                 case .failure(let error):
                     switch error {
                     case NetworkError.httpStatusCode, NetworkError.urlSessionError:
@@ -55,7 +52,8 @@ final class ProfileImageService {
                         fatalError("Unexpected error occured")
                     }
                 }
-            }
+            })
+            
             DispatchQueue.main.async {
                 self.task = newTask
             }

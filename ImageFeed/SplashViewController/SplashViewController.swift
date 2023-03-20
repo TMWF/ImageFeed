@@ -8,10 +8,11 @@
 import UIKit
 
 final class SplashViewController: UIViewController {
-    private let authService: OAuth2ServiceProtocol = OAuth2Service()
+    private let authService: OAuth2ServiceProtocol = OAuth2Service.shared
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
     private let tokenStorage = OAuth2TokenStorage()
+    private let alertPresenter: AlertPresenter = AlertPresenterImplementation()
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -65,11 +66,16 @@ private extension SplashViewController {
                 self.switchToTabBarController()
             case .failure:
                 UIBlockingProgressHUD.dismiss()
-                // TODO [Sprint 11] Показать ошибку
+                self.showNetworkErrorAlert()
                 break
             }
         }
         
+    }
+    
+    func showNetworkErrorAlert() {
+        let alertModel = AlertModel(title: "Что-то пошло не так(", message: "Не удалось войти  в систему", buttonText: "ОК")
+        alertPresenter.showAlert(alertModel)
     }
 }
 
@@ -85,8 +91,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                 self.fetchProfile(token: self.tokenStorage.token)
             case .failure:
                 UIBlockingProgressHUD.dismiss()
-//                let alertModel = AlertModel(title: "Что-то пошло не так(", message: "Не удалось войти  в систему", buttonText: "ОК")
-//                self.alertPresenter.showAlert(alertModel)
+                self.showNetworkErrorAlert()
                 print("Failed to fetch token")
             }
         }

@@ -12,14 +12,13 @@ protocol OAuth2ServiceProtocol {
 }
 
 final class OAuth2Service: OAuth2ServiceProtocol {
+    static let shared = OAuth2Service()
     private let urlSession = URLSession.shared
     
     private var task: URLSessionTask?
     private var lastCode: String?
     
-    public enum NetworkError: Error {
-        case codeError, invalidTokenError
-    }
+    private init() { }
     
     func fetchAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void ) {
         assert(Thread.isMainThread)
@@ -39,35 +38,24 @@ final class OAuth2Service: OAuth2ServiceProtocol {
         let url = urlComponents.url!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
+        
         DispatchQueue.global().async {
-            let task = self.urlSession.dataTask(with: request) { data, response, error in
-                if let data = data,
-                   let response = response,
-                   let httpResponse = response as? HTTPURLResponse
-                {
-                    let statusCode = httpResponse.statusCode
-                    if 200 ..< 300 ~= statusCode {
-                        do {
-                            let response = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                            DispatchQueue.main.async {
-                                completion(.success(response.accessToken))
-                                self.task = nil
-                            }
-                        } catch {
-                            fatalError("Unexpected error occured while trying to get access token from response body")
-                        }
-                    } else {
-                        DispatchQueue.main.async {
-                            completion(.failure(NetworkError.codeError))
-                        }
-                    }
-                } else if let error = error {
-                    DispatchQueue.main.async {
+            let task = self.urlSession.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+                guard let self else { return }
+                switch result {
+                case .success(let tokenResponse):
+                    completion(.success(tokenResponse.accessToken))
+                    self.task = nil
+                case .failure(let error):
+                    switch error {
+                    case NetworkError.httpStatusCode, NetworkError.urlSessionError:
+                        completion(.failure(error))
+                    case NetworkError.urlRequestError:
                         completion(.failure(error))
                         self.lastCode = nil
+                    default:
+                        fatalError("Unexpected error occured")
                     }
-                } else {
-                    fatalError("Unexpected error occured")
                 }
             }
             DispatchQueue.main.async {

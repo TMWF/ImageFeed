@@ -29,19 +29,15 @@ final class ProfileService {
         var request = URLRequest.makeHTTPRequest(path: "/me", httpMethod: "GET")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
-        DispatchQueue.global().async {
-            let task = URLSession.shared.data(for: request) { result in
+        DispatchQueue.global(qos: .userInitiated).async {
+            let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
+                guard let self else { return }
                 switch result {
-                case .success(let data):
-                    do {
-                        let response = try JSONDecoder().decode(ProfileResult.self, from: data)
-                        let profile = Profile.convertProfileResultToProfile(response)
-                        self.profile = profile
-                        completion(.success(profile))
-                        self.task = nil
-                    } catch {
-                        print(error)
-                    }
+                case .success(let responseBody):
+                    let profile = Profile.convertProfileResultToProfile(responseBody)
+                    self.profile = profile
+                    completion(.success(profile))
+                    self.task = nil
                 case .failure(let error):
                     switch error {
                     case NetworkError.httpStatusCode, NetworkError.urlSessionError:
