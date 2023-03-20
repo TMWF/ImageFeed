@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     private var avatarImageView: UIImageView = {
-        let image = UIImage(named: "avatar")
+        let image = UIImage(systemName: "person.crop.circle.fill")
         guard let image else { fatalError("Failed to load profile picture from assets") }
         let imageView = UIImageView(image: image)
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -70,6 +71,7 @@ final class ProfileViewController: UIViewController {
             .addObserver(forName: ProfileImageService.didChangeNotification, object: nil, queue: .main
             )  { [weak self] _ in
                 guard let self else { return }
+                print("NOTIFICATION TRIGGERED SUCCSESSFULLY")
                 self.updateAvatar()
             }
         updateAvatar()
@@ -125,5 +127,7 @@ private extension ProfileViewController {
             let profileImageURL = profileImageService.avatarURL,
             let url = URL(string: profileImageURL)
         else { return }
+        
+        avatarImageView.kf.setImage(with: url, placeholder: UIImage(systemName: "person.crop.circle.fill"))
     }
 }

@@ -37,7 +37,7 @@ final class ProfileImageService {
                     guard let avatarURL = self.avatarURL else { return }
                     completion(.success(avatarURL))
                     self.task = nil
-                    
+                    print("SUCCESSFULLY fetched avatar")
                     NotificationCenter.default
                         .post(name: ProfileImageService.didChangeNotification,
                               object: self,
