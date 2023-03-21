@@ -66,7 +66,13 @@ final class ProfileViewController: UIViewController {
         
         guard let profile = profileService.profile else { return }
         updateProfileDetails(profile: profile)
-        
+        initializeObserver()
+        updateAvatar()
+    }
+}
+
+private extension ProfileViewController {
+    func initializeObserver() {
         profileImageServiceObserver = NotificationCenter.default.addObserver(
             forName: ProfileImageService.didChangeNotification,
             object: nil,
@@ -76,11 +82,8 @@ final class ProfileViewController: UIViewController {
                 print("NOTIFICATION TRIGGERED SUCCSESSFULLY")
                 self.updateAvatar()
             }
-        updateAvatar()
     }
-}
-
-private extension ProfileViewController {
+    
     func addSubviews() {
         view.addSubview(avatarImageView)
         view.addSubview(logoutButton)

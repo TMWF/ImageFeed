@@ -27,6 +27,7 @@
 		7B8741D3297BED21005DF8DC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7B8741D2297BED21005DF8DC /* Assets.xcassets */; };
 		7B8741D6297BED21005DF8DC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7B8741D4297BED21005DF8DC /* LaunchScreen.storyboard */; };
 		7B932C0529CA23C400948DFA /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 7B932C0429CA23C400948DFA /* SwiftKeychainWrapper */; };
+		7B932C0929CA283F00948DFA /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B932C0829CA283F00948DFA /* TabBarController.swift */; };
 		7B977FD429C8F9E70009D119 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 7B977FD329C8F9E70009D119 /* Kingfisher */; };
 		7B98FCBA29BF684B00CE99E9 /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B98FCB929BF684B00CE99E9 /* UIBlockingProgressHUD.swift */; };
 		7B98FCBC29BF6C3200CE99E9 /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B98FCBB29BF6C3200CE99E9 /* ProfileService.swift */; };
@@ -61,6 +62,7 @@
 		7B8741D2297BED21005DF8DC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7B8741D5297BED21005DF8DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7B8741D7297BED21005DF8DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7B932C0829CA283F00948DFA /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		7B98FCB929BF684B00CE99E9 /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
 		7B98FCBB29BF6C3200CE99E9 /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
 		7B98FCBD29BF6C7B00CE99E9 /* ProfileResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileResult.swift; sourceTree = "<group>"; };
@@ -139,14 +141,10 @@
 		7B8741C8297BED20005DF8DC /* ImageFeed */ = {
 			isa = PBXGroup;
 			children = (
+				7B932C0629CA27C600948DFA /* Controllers */,
 				7B097A8729A75B9D00CB0765 /* Services */,
 				7BFC8667298EFE080050EC3B /* Helpers */,
 				7B097A8429A75B0200CB0765 /* Model */,
-				7B35943C29A62E6C00EA7B26 /* AuthVC */,
-				7BDEDCA029866D7200AC7DB5 /* ImageList */,
-				7B9FD8EB299F77B200F2DC8F /* Profile */,
-				7BD823EE29A0A41D00F43999 /* SingleImage */,
-				7BCC762729AC9097005A08CA /* SplashViewController */,
 				7B8741C9297BED20005DF8DC /* AppDelegate.swift */,
 				7B8741CB297BED20005DF8DC /* SceneDelegate.swift */,
 				7B8741CF297BED20005DF8DC /* Main.storyboard */,
@@ -155,6 +153,27 @@
 				7B8741D7297BED21005DF8DC /* Info.plist */,
 			);
 			path = ImageFeed;
+			sourceTree = "<group>";
+		};
+		7B932C0629CA27C600948DFA /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				7B932C0729CA281A00948DFA /* TabBarController */,
+				7BCC762729AC9097005A08CA /* SplashViewController */,
+				7BD823EE29A0A41D00F43999 /* SingleImage */,
+				7B9FD8EB299F77B200F2DC8F /* Profile */,
+				7B35943C29A62E6C00EA7B26 /* AuthVC */,
+				7BDEDCA029866D7200AC7DB5 /* ImageList */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		7B932C0729CA281A00948DFA /* TabBarController */ = {
+			isa = PBXGroup;
+			children = (
+				7B932C0829CA283F00948DFA /* TabBarController.swift */,
+			);
+			path = TabBarController;
 			sourceTree = "<group>";
 		};
 		7B9FD8EB299F77B200F2DC8F /* Profile */ = {
@@ -285,6 +304,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7B9FD8ED299F781700F2DC8F /* ProfileViewController.swift in Sources */,
+				7B932C0929CA283F00948DFA /* TabBarController.swift in Sources */,
 				7BFC8669298EFE300050EC3B /* Constants.swift in Sources */,
 				7B097A8929A75BF800CB0765 /* OAuth2Service.swift in Sources */,
 				7BCC762929AC90BC005A08CA /* SplashViewController.swift in Sources */,
