@@ -67,8 +67,10 @@ final class ProfileViewController: UIViewController {
         guard let profile = profileService.profile else { return }
         updateProfileDetails(profile: profile)
         
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(forName: ProfileImageService.didChangeNotification, object: nil, queue: .main
+        profileImageServiceObserver = NotificationCenter.default.addObserver(
+            forName: ProfileImageService.didChangeNotification,
+            object: nil,
+            queue: .main
             )  { [weak self] _ in
                 guard let self else { return }
                 print("NOTIFICATION TRIGGERED SUCCSESSFULLY")
@@ -127,7 +129,8 @@ private extension ProfileViewController {
             let profileImageURL = profileImageService.avatarURL,
             let url = URL(string: profileImageURL)
         else { return }
-        
-        avatarImageView.kf.setImage(with: url, placeholder: UIImage(systemName: "person.crop.circle.fill"))
+        let processor = RoundCornerImageProcessor(cornerRadius: 20)
+        avatarImageView.kf.setImage(with: url, placeholder: UIImage(systemName: "person.crop.circle.fill"), options: [.processor(processor)])
+        avatarImageView.kf.indicatorType = .activity
     }
 }

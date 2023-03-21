@@ -23,7 +23,7 @@ final class OAuth2Service: OAuth2ServiceProtocol {
     func fetchAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void ) {
         assert(Thread.isMainThread)
         if lastCode == code { return }
-        task?.cancel()                                      
+        task?.cancel()
         lastCode = code
         
         var urlComponents = URLComponents(string: "https://unsplash.com/oauth/token")!
@@ -39,29 +39,27 @@ final class OAuth2Service: OAuth2ServiceProtocol {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
-        DispatchQueue.global().async {
-            let task = self.urlSession.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
-                guard let self else { return }
-                switch result {
-                case .success(let tokenResponse):
-                    completion(.success(tokenResponse.accessToken))
-                    self.task = nil
-                case .failure(let error):
-                    switch error {
-                    case NetworkError.httpStatusCode, NetworkError.urlSessionError:
-                        completion(.failure(error))
-                    case NetworkError.urlRequestError:
-                        completion(.failure(error))
-                        self.lastCode = nil
-                    default:
-                        fatalError("Unexpected error occured")
-                    }
+        let task = self.urlSession.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+            guard let self else { return }
+            switch result {
+            case .success(let tokenResponse):
+                completion(.success(tokenResponse.accessToken))
+                self.task = nil
+            case .failure(let error):
+                switch error {
+                case NetworkError.httpStatusCode, NetworkError.urlSessionError:
+                    completion(.failure(error))
+                case NetworkError.urlRequestError:
+                    completion(.failure(error))
+                    self.lastCode = nil
+                default:
+                    fatalError("Unexpected error occured")
                 }
             }
-            DispatchQueue.main.async {
-                self.task = task
-            }
-            task.resume()
         }
+        DispatchQueue.main.async {
+            self.task = task
+        }
+        task.resume()
     }
 }

@@ -29,31 +29,30 @@ final class ProfileService {
         var request = URLRequest.makeHTTPRequest(path: "/me", httpMethod: "GET")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
-        DispatchQueue.global(qos: .userInitiated).async {
-            let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
-                guard let self else { return }
-                switch result {
-                case .success(let responseBody):
-                    let profile = Profile.convertProfileResultToProfile(responseBody)
-                    self.profile = profile
-                    completion(.success(profile))
-                    self.task = nil
-                case .failure(let error):
-                    switch error {
-                    case NetworkError.httpStatusCode, NetworkError.urlSessionError:
-                        completion(.failure(error))
-                    case NetworkError.urlRequestError:
-                        completion(.failure(error))
-                        self.lastToken = nil
-                    default:
-                        fatalError("Unexpected error occured")
-                    }
+        let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
+            guard let self else { return }
+            switch result {
+            case .success(let responseBody):
+                let profile = Profile.convertProfileResultToProfile(responseBody)
+                self.profile = profile
+                completion(.success(profile))
+                self.task = nil
+            case .failure(let error):
+                switch error {
+                case NetworkError.httpStatusCode, NetworkError.urlSessionError:
+                    completion(.failure(error))
+                case NetworkError.urlRequestError:
+                    completion(.failure(error))
+                    self.lastToken = nil
+                default:
+                    fatalError("Unexpected error occured")
                 }
             }
-            DispatchQueue.main.async {
-                self.task = task
-            }
-            task.resume()
         }
+        DispatchQueue.main.async {
+            self.task = task
+        }
+        task.resume()
+        
     }
 }

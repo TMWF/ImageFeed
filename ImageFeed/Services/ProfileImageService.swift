@@ -23,41 +23,40 @@ final class ProfileImageService {
             return
         }
         
-        var request = URLRequest.makeHTTPRequest(path: "/user/\(username)", httpMethod: "GET")
+        var request = URLRequest.makeHTTPRequest(path: "/users/\(username)", httpMethod: "GET")
         request.setValue("Bearer \(tokenStorage.token)", forHTTPHeaderField: "Authorization")
         
-        DispatchQueue.global().async {
-            let newTask = URLSession.shared.objectTask(for: request, completion: { [weak self] (result: Result<UserResult, Error>) in
-                guard let self else { return }
-                
-                switch result {
-                case .success(let userResult):
-                    let imageURL = userResult.profileImage?.small
-                    self.avatarURL = imageURL
-                    guard let avatarURL = self.avatarURL else { return }
-                    completion(.success(avatarURL))
-                    self.task = nil
-                    print("SUCCESSFULLY fetched avatar")
-                    NotificationCenter.default
-                        .post(name: ProfileImageService.didChangeNotification,
-                              object: self,
-                              userInfo: ["URL": avatarURL])
-                case .failure(let error):
-                    switch error {
-                    case NetworkError.httpStatusCode, NetworkError.urlSessionError:
-                        completion(.failure(error))
-                    case NetworkError.urlRequestError:
-                        completion(.failure(error))
-                    default:
-                        fatalError("Unexpected error occured")
-                    }
-                }
-            })
+        let newTask = URLSession.shared.objectTask(for: request, completion: { [weak self] (result: Result<UserResult, Error>) in
+            guard let self else { return }
             
-            DispatchQueue.main.async {
-                self.task = newTask
+            switch result {
+            case .success(let userResult):
+                let imageURL = userResult.profileImage?.small
+                self.avatarURL = imageURL
+                guard let avatarURL = self.avatarURL else { return }
+                completion(.success(avatarURL))
+                self.task = nil
+                NotificationCenter.default
+                    .post(name: ProfileImageService.didChangeNotification,
+                          object: self,
+                          userInfo: ["URL": avatarURL])
+            case .failure(let error):
+                switch error {
+                case NetworkError.httpStatusCode, NetworkError.urlSessionError:
+                    print(error.localizedDescription)
+                    completion(.failure(error))
+                case NetworkError.urlRequestError:
+                    print(error)
+                    completion(.failure(error))
+                default:
+                    fatalError("Unexpected error occured")
+                }
             }
-            newTask.resume()
+        })
+        
+        DispatchQueue.main.async {
+            self.task = newTask
         }
+        newTask.resume()
     }
 }

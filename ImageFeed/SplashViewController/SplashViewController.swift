@@ -59,9 +59,7 @@ private extension SplashViewController {
             switch result {
             case .success:
                 guard let username = self.profileService.profile?.username else { fatalError("Unexpectedly found nil while trying to unwrap profile's username")}
-                self.profileImageService.fetchProfileImageURL(username: username) { result in
-                    
-                }
+                self.fetchProfileImage(username: username)
                 UIBlockingProgressHUD.dismiss()
                 self.switchToTabBarController()
             case .failure:
@@ -71,6 +69,19 @@ private extension SplashViewController {
             }
         }
         
+    }
+    
+    func fetchProfileImage(username: String) {
+        profileImageService.fetchProfileImageURL(username: username) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(_):
+                break
+            case .failure(let error):
+                print(error.localizedDescription)
+                self.showNetworkErrorAlert()
+            }
+        }
     }
     
     func showNetworkErrorAlert() {
