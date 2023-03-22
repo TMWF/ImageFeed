@@ -133,7 +133,12 @@ private extension ProfileViewController {
             let url = URL(string: profileImageURL)
         else { return }
         let processor = RoundCornerImageProcessor(cornerRadius: 20)
-        avatarImageView.kf.setImage(with: url, placeholder: UIImage(systemName: "person.crop.circle.fill"), options: [.processor(processor)])
+        avatarImageView.kf.setImage(
+            with: url,
+            placeholder: UIImage(systemName: "person.crop.circle.fill"),
+            options: [.processor(processor),
+                .cacheSerializer(FormatIndicatedCacheSerializer.png)]
+        )
         avatarImageView.kf.indicatorType = .activity
     }
 }
