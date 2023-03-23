@@ -17,10 +17,10 @@ final class ProfileViewController: UIViewController {
         return imageView
     }()
     
-    private var logoutButton: UIButton = {
+    private lazy var logoutButton: UIButton = {
         let image = UIImage(named: "logout_button")
         guard let image else { fatalError("Failed to load image for logout button from assets") }
-        let button = UIButton.systemButton(with: image, target: ProfileViewController.self, action: #selector(didTapLogoutButton))
+        let button = UIButton.systemButton(with: image, target: self, action: #selector(didTapLogoutButton))
         button.tintColor = .hexStringToUIColor(hex: "#F56B6C")
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -117,9 +117,7 @@ private extension ProfileViewController {
         ])
     }
     
-    @objc func didTapLogoutButton() {
-        
-    }
+    
     
     func updateProfileDetails(profile: Profile) {
         descriptionLabel.text = profile.bio
@@ -140,5 +138,9 @@ private extension ProfileViewController {
                 .cacheSerializer(FormatIndicatedCacheSerializer.png)]
         )
         avatarImageView.kf.indicatorType = .activity
+    }
+    
+    @objc func didTapLogoutButton() {
+        
     }
 }
