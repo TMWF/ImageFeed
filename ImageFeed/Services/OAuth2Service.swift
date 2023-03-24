@@ -7,11 +7,25 @@
 
 import Foundation
 
-final class OAuth2Service {
-    public enum NetworkError: Error {
-        case codeError, invalidTokenError
-    }
+protocol OAuth2ServiceProtocol {
+    func fetchAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void )
+}
+
+final class OAuth2Service: OAuth2ServiceProtocol {
+    static let shared = OAuth2Service()
+    private let urlSession = URLSession.shared
+    
+    private var task: URLSessionTask?
+    private var lastCode: String?
+    
+    private init() { }
+    
     func fetchAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void ) {
+        assert(Thread.isMainThread)
+        if lastCode == code { return }
+        task?.cancel()
+        lastCode = code
+        
         var urlComponents = URLComponents(string: "https://unsplash.com/oauth/token")!
         urlComponents.queryItems = [
             URLQueryItem(name: "client_id", value: Constants.accessKey),
@@ -24,36 +38,34 @@ final class OAuth2Service {
         let url = urlComponents.url!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        DispatchQueue.global().async {
-            let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                if let data = data,
-                   let response = response,
-                   let httpResponse = response as? HTTPURLResponse
-                {
-                    let statusCode = httpResponse.statusCode
-                    if 200 ..< 300 ~= statusCode {
-                        do {
-                            let response = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                            DispatchQueue.main.async {
-                                completion(.success(response.accessToken))
-                            }
-                        } catch {
-                            fatalError("Unexpected error occured while trying to get access token from response body")
-                        }
-                    } else {
-                        DispatchQueue.main.async {
-                            completion(.failure(NetworkError.codeError))
-                        }
-                    }
-                } else if let error = error {
-                    DispatchQueue.main.async {
-                        completion(.failure(error))
-                    }
-                } else {
+        
+        let task = self.urlSession.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+            guard let self else { return }
+            switch result {
+            case .success(let tokenResponse):
+                completion(.success(tokenResponse.accessToken))
+                self.resetTaskAndCodeToNil()
+            case .failure(let error):
+                switch error {
+                case NetworkError.httpStatusCode, NetworkError.urlSessionError:
+                    completion(.failure(error))
+                    self.resetTaskAndCodeToNil()
+                case NetworkError.urlRequestError:
+                    completion(.failure(error))
+                    self.resetTaskAndCodeToNil()
+                default:
                     fatalError("Unexpected error occured")
                 }
             }
-            task.resume()
         }
+        DispatchQueue.main.async {
+            self.task = task
+        }
+        task.resume()
+    }
+    
+    private func resetTaskAndCodeToNil() {
+        task = nil
+        lastCode = nil
     }
 }

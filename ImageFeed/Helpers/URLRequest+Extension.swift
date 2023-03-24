@@ -18,4 +18,19 @@ extension URLRequest {
         request.httpMethod = httpMethod
         return request
     }
+    
+    static func makeHTTPRequestWithQueryItems(
+        _ queryItems: [URLQueryItem],
+        path: String,
+        httpMethod: String,
+        baseURL: String = "https://api.unsplash.com"
+    ) -> URLRequest {
+        var urlComponents = URLComponents(string: baseURL + path)
+        urlComponents?.queryItems = queryItems
+        guard let url = urlComponents?.url else { fatalError("Invalid url components") }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = httpMethod
+        return request
+    }
 }
