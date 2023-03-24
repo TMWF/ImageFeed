@@ -44,14 +44,15 @@ final class OAuth2Service: OAuth2ServiceProtocol {
             switch result {
             case .success(let tokenResponse):
                 completion(.success(tokenResponse.accessToken))
-                self.task = nil
+                self.resetTaskAndCodeToNil()
             case .failure(let error):
                 switch error {
                 case NetworkError.httpStatusCode, NetworkError.urlSessionError:
                     completion(.failure(error))
+                    self.resetTaskAndCodeToNil()
                 case NetworkError.urlRequestError:
                     completion(.failure(error))
-                    self.lastCode = nil
+                    self.resetTaskAndCodeToNil()
                 default:
                     fatalError("Unexpected error occured")
                 }
@@ -61,5 +62,10 @@ final class OAuth2Service: OAuth2ServiceProtocol {
             self.task = task
         }
         task.resume()
+    }
+    
+    private func resetTaskAndCodeToNil() {
+        task = nil
+        lastCode = nil
     }
 }

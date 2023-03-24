@@ -80,16 +80,14 @@ private extension SplashViewController {
     func fetchProfile(token: String) {
         profileService.fetchProfile(token: token) { [weak self] result in
             guard let self = self else { return }
+            UIBlockingProgressHUD.dismiss()
             switch result {
             case .success:
-                guard let username = self.profileService.profile?.username else { fatalError("Unexpectedly found nil while trying to unwrap profile's username")}
+                guard let username = self.profileService.profile?.username else { return }
                 self.fetchProfileImage(username: username)
-                UIBlockingProgressHUD.dismiss()
                 self.switchToTabBarController()
             case .failure:
-                UIBlockingProgressHUD.dismiss()
                 self.showNetworkErrorAlert()
-                break
             }
         }
         

@@ -41,8 +41,10 @@ final class ProfileService {
                 switch error {
                 case NetworkError.httpStatusCode, NetworkError.urlSessionError:
                     completion(.failure(error))
+                    self.task = nil
                 case NetworkError.urlRequestError:
                     completion(.failure(error))
+                    self.task = nil
                     self.lastToken = nil
                 default:
                     fatalError("Unexpected error occured")
@@ -53,6 +55,5 @@ final class ProfileService {
             self.task = task
         }
         task.resume()
-        
     }
 }

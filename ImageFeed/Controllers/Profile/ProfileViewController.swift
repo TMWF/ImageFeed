@@ -60,7 +60,7 @@ final class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        view.backgroundColor = .hexStringToUIColor(hex: "#1A1B22")
         addSubviews()
         activateConstraints()
         

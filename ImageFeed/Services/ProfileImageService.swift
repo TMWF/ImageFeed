@@ -45,9 +45,11 @@ final class ProfileImageService {
                 case NetworkError.httpStatusCode, NetworkError.urlSessionError:
                     print(error.localizedDescription)
                     completion(.failure(error))
+                    self.task = nil
                 case NetworkError.urlRequestError:
                     print(error)
                     completion(.failure(error))
+                    self.task = nil
                 default:
                     fatalError("Unexpected error occured")
                 }
