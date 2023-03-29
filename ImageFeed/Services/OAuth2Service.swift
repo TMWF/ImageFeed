@@ -41,22 +41,21 @@ final class OAuth2Service: OAuth2ServiceProtocol {
         
         let task = self.urlSession.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
             guard let self else { return }
+            
             switch result {
             case .success(let tokenResponse):
                 completion(.success(tokenResponse.accessToken))
-                self.resetTaskAndCodeToNil()
             case .failure(let error):
                 switch error {
                 case NetworkError.httpStatusCode, NetworkError.urlSessionError:
                     completion(.failure(error))
-                    self.resetTaskAndCodeToNil()
                 case NetworkError.urlRequestError:
                     completion(.failure(error))
-                    self.resetTaskAndCodeToNil()
                 default:
                     fatalError("Unexpected error occured")
                 }
             }
+            self.resetTaskAndCodeToNil()
         }
         DispatchQueue.main.async {
             self.task = task

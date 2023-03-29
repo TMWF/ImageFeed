@@ -10,6 +10,7 @@ import UIKit
 class ImageListViewController: UIViewController {
 
     @IBOutlet private var tableview: UITableView!
+    private let imageListService = ImageListService()
     
     private let photosName: [String] = Array(0...19).map{ "\($0)"}
     
@@ -53,6 +54,11 @@ extension ImageListViewController: UITableViewDelegate {
         let scale = imageViewWidth / imageWidth
         let cellHeight = image.size.height * scale + imageInsets.top + imageInsets.bottom
         return cellHeight
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard indexPath.row + 1 == imageListService.photos.count else { return }
+        imageListService.fetchPhotosNextPage()
     }
 }
 

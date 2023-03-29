@@ -31,25 +31,23 @@ final class ProfileService {
         
         let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
             guard let self else { return }
+            
             switch result {
             case .success(let responseBody):
                 let profile = Profile.convertProfileResultToProfile(responseBody)
                 self.profile = profile
                 completion(.success(profile))
-                self.task = nil
             case .failure(let error):
                 switch error {
                 case NetworkError.httpStatusCode, NetworkError.urlSessionError:
                     completion(.failure(error))
-                    self.task = nil
                 case NetworkError.urlRequestError:
                     completion(.failure(error))
-                    self.task = nil
-                    self.lastToken = nil
                 default:
                     fatalError("Unexpected error occured")
                 }
             }
+            self.task = nil
         }
         DispatchQueue.main.async {
             self.task = task
