@@ -13,4 +13,10 @@ final class ImageListCell: UITableViewCell {
     
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var dateLabel: UILabel!
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        cellImageView.kf.cancelDownloadTask()
+    }
 }

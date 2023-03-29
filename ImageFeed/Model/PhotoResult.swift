@@ -7,15 +7,11 @@
 
 import Foundation
 
-struct PhotoResponseBody: Decodable {
-    let photos: [PhotoResult]
-}
-
 struct PhotoResult: Decodable {
     let id: String
     let createdAt: String
-    let width: String
-    let height: String
+    let width: Int
+    let height: Int
     let description: String?
     let likedByUser: Bool
     let urls: URLs

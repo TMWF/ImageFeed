@@ -13,16 +13,13 @@ final class ImageListService {
     private(set) var photos = [Photo]()
     private let tokenStorage = OAuth2TokenStorage()
     
-    private lazy var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
-        return formatter
+    private lazy var dateFormatter = {
+        return ISO8601DateFormatter()
     }()
     
     private var task: URLSessionTask?
     
-    func fetchPhotosNextPage(completion: @escaping (Result<[Photo], Error>) -> Void) {
+    func fetchPhotosNextPage() {
         assert(Thread.isMainThread)
         guard task == nil else { return }
         let nextPage = lastLoadedPage == nil ? 1 : lastLoadedPage! + 1
@@ -31,15 +28,13 @@ final class ImageListService {
         var request = URLRequest.makeHTTPRequestWithQueryItems(queryItems, path: "/photos", httpMethod: "GET")
         request.setValue("Bearer \(tokenStorage.token)", forHTTPHeaderField: "Authorization")
         
-        let newTask = URLSession.shared.objectTask(for: request, completion: { [weak self] (result: Result<PhotoResponseBody, Error>) in
+        let newTask = URLSession.shared.objectTask(for: request, completion: { [weak self] (result: Result<[PhotoResult], Error>) in
             guard let self else { return }
             
             switch result {
             case .success(let photoResult):
                 let photos = self.convertPhotoResultToPhotos(photoResult)
                 self.photos.append(contentsOf: photos)
-                
-                completion(.success(photos))
                 
                 NotificationCenter.default
                     .post(name: ImageListService.didChangeNotification,
@@ -49,10 +44,8 @@ final class ImageListService {
                 switch error {
                 case NetworkError.httpStatusCode, NetworkError.urlSessionError:
                     print(error.localizedDescription)
-                    completion(.failure(error))
                 case NetworkError.urlRequestError:
                     print(error)
-                    completion(.failure(error))
                 default:
                     fatalError("Unexpected error occured")
                 }
@@ -67,19 +60,13 @@ final class ImageListService {
 
     }
     
-    private func convertPhotoResultToPhotos(_ photoresult: PhotoResponseBody) -> [Photo] {
+    private func convertPhotoResultToPhotos(_ photoresult: [PhotoResult]) -> [Photo] {
         var photos = [Photo]()
         
-        for photo in photoresult.photos {
-            guard let width = Double(photo.width),
-                  let height = Double(photo.height)
-            else {
-                fatalError("Failed to parse photo width and height")
-            }
-            
+        for photo in photoresult {
             let newPhoto = Photo(
                 id: photo.id,
-                size: CGSize(width: width, height: height),
+                size: CGSize(width: photo.width, height: photo.height),
                 createdAt: dateFormatter.date(from: photo.createdAt),
                 welcomeDescription: photo.description,
                 thumbImageURL: photo.urls.thumb,
