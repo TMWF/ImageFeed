@@ -23,7 +23,7 @@ final class ImageListService {
         assert(Thread.isMainThread)
         guard task == nil else { return }
         let nextPage = lastLoadedPage == nil ? 1 : lastLoadedPage! + 1
-        
+        print("Next page is \(nextPage)")
         let queryItems = [URLQueryItem(name: "page", value: "\(nextPage)")]
         var request = URLRequest.makeHTTPRequestWithQueryItems(queryItems, path: "/photos", httpMethod: "GET")
         request.setValue("Bearer \(tokenStorage.token)", forHTTPHeaderField: "Authorization")
@@ -39,7 +39,7 @@ final class ImageListService {
                 NotificationCenter.default
                     .post(name: ImageListService.didChangeNotification,
                           object: self,
-                          userInfo: ["photos": photos])
+                          userInfo: ["photos": self.photos])
             case .failure(let error):
                 switch error {
                 case NetworkError.httpStatusCode, NetworkError.urlSessionError:

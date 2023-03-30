@@ -11,6 +11,7 @@ final class SingleImageViewController: UIViewController {
     @IBOutlet private var scrollView: UIScrollView!
     @IBOutlet private var imageView: UIImageView!
     
+    var imageLink: String?
     var image: UIImage! {
         didSet {
             guard isViewLoaded else { return }
