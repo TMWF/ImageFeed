@@ -7,6 +7,7 @@
 
 import UIKit
 import Kingfisher
+import WebKit
 
 final class ProfileViewController: UIViewController {
     private var avatarImageView: UIImageView = {
@@ -141,6 +142,17 @@ private extension ProfileViewController {
     }
     
     @objc func didTapLogoutButton() {
+        OAuth2TokenStorage().token = ""
+        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            records.forEach { record in
+                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+            }
+        }
         
+        Constants.splashScreenFirstTimeAppeared = true
+        guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
+        let splashVC = SplashViewController()
+        window.rootViewController = splashVC
     }
 }
