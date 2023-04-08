@@ -16,6 +16,7 @@
 		7B35943E29A62E8200EA7B26 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B35943D29A62E8200EA7B26 /* AuthViewController.swift */; };
 		7B35944029A6354300EA7B26 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B35943F29A6354300EA7B26 /* WebViewController.swift */; };
 		7B35944229A63F0300EA7B26 /* WebViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B35944129A63F0300EA7B26 /* WebViewControllerDelegate.swift */; };
+		7B38631829E1712600D4F474 /* AlertBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B38631729E1712600D4F474 /* AlertBuilder.swift */; };
 		7B3F8FBC29AA030800095C97 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3F8FBB29AA030800095C97 /* AlertPresenter.swift */; };
 		7B3F8FBE29AA033F00095C97 /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3F8FBD29AA033F00095C97 /* AlertModel.swift */; };
 		7B4677C829C1019A001FCC77 /* ProfileImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4677C729C1019A001FCC77 /* ProfileImageService.swift */; };
@@ -53,6 +54,7 @@
 		7B35943D29A62E8200EA7B26 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		7B35943F29A6354300EA7B26 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		7B35944129A63F0300EA7B26 /* WebViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewControllerDelegate.swift; sourceTree = "<group>"; };
+		7B38631729E1712600D4F474 /* AlertBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBuilder.swift; sourceTree = "<group>"; };
 		7B3F8FBB29AA030800095C97 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
 		7B3F8FBD29AA033F00095C97 /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
 		7B4677C729C1019A001FCC77 /* ProfileImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageService.swift; sourceTree = "<group>"; };
@@ -227,6 +229,7 @@
 				7BEA321329C087A900428844 /* URLSession+Extension.swift */,
 				7B3F8FBB29AA030800095C97 /* AlertPresenter.swift */,
 				7B98FCB929BF684B00CE99E9 /* UIBlockingProgressHUD.swift */,
+				7B38631729E1712600D4F474 /* AlertBuilder.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -336,6 +339,7 @@
 				7B8741CA297BED20005DF8DC /* AppDelegate.swift in Sources */,
 				7B097A8D29A7707A00CB0765 /* URLRequest+Extension.swift in Sources */,
 				7B35944229A63F0300EA7B26 /* WebViewControllerDelegate.swift in Sources */,
+				7B38631829E1712600D4F474 /* AlertBuilder.swift in Sources */,
 				7B8741CC297BED20005DF8DC /* SceneDelegate.swift in Sources */,
 				7B7509E129D382B50025E67E /* ImageListService.swift in Sources */,
 				7B98FCC029BF708300CE99E9 /* Profile.swift in Sources */,

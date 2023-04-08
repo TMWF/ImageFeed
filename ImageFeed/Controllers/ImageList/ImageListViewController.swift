@@ -9,13 +9,13 @@ import Kingfisher
 import UIKit
 
 class ImageListViewController: UIViewController {
-
     @IBOutlet private var tableView: UITableView!
     private let imageListService = ImageListService()
     private var photos = [Photo]()
     
     private var imageListServiceObserver: NSObjectProtocol?
     
+    private let alertPresenter: AlertPresenter = AlertPresenterImplementation()
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -41,7 +41,7 @@ class ImageListViewController: UIViewController {
         }
     }
 }
-
+//MARK: - Private Extension
 private extension ImageListViewController {
     func addPhotosObserver() {
         imageListServiceObserver = NotificationCenter.default.addObserver(
@@ -76,7 +76,7 @@ private extension ImageListViewController {
             return
         }
         let likeImage = photo.isLiked ? UIImage(named: Constants.likeImageOn) : UIImage(named: Constants.likeImageOff)
-        
+        cell.delegate = self
         cell.cellImageView.kf.indicatorType = .activity
         cell.cellImageView.kf.setImage(
             with: photoURL,
@@ -89,6 +89,11 @@ private extension ImageListViewController {
         }
         cell.likeButton.setImage(likeImage, for: .normal)
         cell.dateLabel.text = dateFormatter.string(from: photo.createdAt ?? Date())
+    }
+    
+    func showNetworkErrorAlert() {
+        let alertModel = AlertModel(title: "Что-то пошло не так(", message: "Не удалось войти  в систему", buttonText: "ОК")
+        alertPresenter.showAlert(alertModel)
     }
 }
 //MARK: - TableView Delegate methods
@@ -129,5 +134,28 @@ extension ImageListViewController: UITableViewDataSource {
         configCell(for: imageListCell, with: indexPath)
         return imageListCell
     }
+}
+//MARK: - ImageListCellDelegate method
+extension ImageListViewController: ImageListCellDelegate {
+    func imageListCellDidTapLike(_ cell: ImageListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+        
+        UIBlockingProgressHUD.show()
+        imageListService.changeLike(photoId: photo.id, isLiked: !photo.isLiked) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success:
+                self.photos = self.imageListService.photos
+                cell.setIsLiked(self.photos[indexPath.row].isLiked)
+                UIBlockingProgressHUD.dismiss()
+            case .failure:
+                UIBlockingProgressHUD.dismiss()
+                self.showNetworkErrorAlert()
+            }
+        }
+    }
+    
+    
 }
 
