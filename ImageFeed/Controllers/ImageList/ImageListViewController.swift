@@ -50,9 +50,7 @@ private extension ImageListViewController {
             object: nil,
             queue: .main
             )  { [weak self] _ in
-                guard let self else { return }
-                print("Image List NOTIFICATION TRIGGERED SUCCSESSFULLY")
-                self.updateTableViewAnimated()
+                self?.updateTableViewAnimated()
             }
     }
     
@@ -83,13 +81,16 @@ private extension ImageListViewController {
             with: photoURL,
             placeholder: UIImage(named: "Stub")
         ) { [weak self] _ in
-            guard let self = self else {
-                return
-            }
+            guard let self = self else { return }
             self.tableView.reloadRows(at: [indexPath], with: .automatic)
         }
         cell.likeButton.setImage(likeImage, for: .normal)
-        cell.dateLabel.text = dateFormatter.string(from: photo.createdAt ?? Date())
+        
+        if let date = photo.createdAt {
+            cell.dateLabel.text = dateFormatter.string(from: date)
+        } else {
+            cell.dateLabel.text = ""
+        }
     }
     
     func showNetworkErrorAlert() {

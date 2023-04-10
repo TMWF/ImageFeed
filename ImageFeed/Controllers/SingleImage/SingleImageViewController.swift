@@ -71,7 +71,7 @@ final class SingleImageViewController: UIViewController {
     
     private func showNetworkErrorAlert() {
         AlertBuilder(viewController: self)
-            .withTitle("Что-то погло не так(")
+            .withTitle("Что-то пошло не так(")
             .andMessage("Попробовать ещё раз?")
             .preferredStyle(.alert)
             .onSuccessAction(title: "Повторить") { [weak self] _ in
