@@ -53,6 +53,7 @@ final class ImageListService {
                 default:
                     fatalError("Unexpected error occured")
                 }
+                lastLoadedPage -= 1
             }
             self.task = nil
         })
