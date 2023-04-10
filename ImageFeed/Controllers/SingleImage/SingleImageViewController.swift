@@ -18,6 +18,9 @@ final class SingleImageViewController: UIViewController {
         super.viewDidLoad()
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
+        guard let placeholder = UIImage(named: "Stub") else { return }
+        imageView.image = placeholder
+        rescaleAndCenterImageInScrollView(image: placeholder)
         downloadImage()
     }
     
