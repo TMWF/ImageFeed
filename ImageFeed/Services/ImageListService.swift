@@ -10,7 +10,7 @@ import Foundation
 final class ImageListService {
     private struct EmptyBody: Decodable { }
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
-    private var lastLoadedPage: Int?
+    private var lastLoadedPage = 0
     private(set) var photos = [Photo]()
     private let tokenStorage = OAuth2TokenStorage()
     
@@ -23,7 +23,9 @@ final class ImageListService {
     func fetchPhotosNextPage() {
         assert(Thread.isMainThread)
         guard task == nil else { return }
-        let nextPage = lastLoadedPage == nil ? 1 : lastLoadedPage! + 1
+        lastLoadedPage += 1
+        let nextPage = lastLoadedPage
+    
         print("Next page is \(nextPage)")
         let queryItems = [URLQueryItem(name: "page", value: "\(nextPage)")]
         var request = URLRequest.makeHTTPRequestWithQueryItems(queryItems, path: "/photos", httpMethod: "GET")
@@ -35,6 +37,7 @@ final class ImageListService {
             switch result {
             case .success(let photoResult):
                 let photos = self.convertPhotoResultToPhotos(photoResult)
+                assert(Thread.isMainThread)
                 self.photos.append(contentsOf: photos)
                 
                 NotificationCenter.default
@@ -63,9 +66,6 @@ final class ImageListService {
     
     func changeLike(photoId: String, isLiked: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
         assert(Thread.isMainThread)
-//        if task != nil {
-//            return
-//        }
         
         var request = URLRequest.makeHTTPRequest(
             path: "/photos/\(photoId)/like",

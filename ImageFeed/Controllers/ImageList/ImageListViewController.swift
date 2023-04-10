@@ -16,6 +16,7 @@ class ImageListViewController: UIViewController {
     private var imageListServiceObserver: NSObjectProtocol?
     
     private let alertPresenter: AlertPresenter = AlertPresenterImplementation()
+    
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -58,10 +59,10 @@ private extension ImageListViewController {
     func updateTableViewAnimated() {
         let oldCount = photos.count
         let newCount = imageListService.photos.count
-        
-//        TODO: guard issue
         photos = imageListService.photos
+        
         guard oldCount != newCount else { return }
+        
         tableView.performBatchUpdates {
             let indexPaths = (oldCount..<newCount).map { i in
                 IndexPath(row: i, section: 0)

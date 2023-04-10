@@ -142,6 +142,23 @@ private extension ProfileViewController {
     }
     
     @objc func didTapLogoutButton() {
+        showConfirmationAlert()
+    }
+    
+    func showConfirmationAlert() {
+        AlertBuilder(viewController: self)
+            .withTitle("Пока, пока!")
+            .andMessage("Уверены что хотите выйти?")
+            .preferredStyle(.alert)
+            .onSuccessAction(title: "Нет") {  _ in  }
+            .onCancelAction(title: "Да") { [weak self] _ in
+                guard let self else { return }
+                self.performLogout()
+            }
+            .show()
+    }
+    
+    func performLogout() {
         OAuth2TokenStorage().token = ""
         HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
         WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
