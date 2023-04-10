@@ -73,7 +73,7 @@ final class ImageListService {
         )
         request.setValue("Bearer \(tokenStorage.token)", forHTTPHeaderField: "Authorization")
         
-        let newTask = URLSession.shared.objectTask(for: request, completion: { [weak self] (result: Result<EmptyBody, Error>) in
+        let task = URLSession.shared.objectTask(for: request, completion: { [weak self] (result: Result<EmptyBody, Error>) in
             guard let self else { return }
             
             switch result {
@@ -107,13 +107,8 @@ final class ImageListService {
                     fatalError("Unexpected error occured")
                 }
             }
-//            self.task = nil
         })
-        
-//        DispatchQueue.main.async {
-//            self.task = newTask
-//        }
-        newTask.resume()
+        task.resume()
     }
     
     private func convertPhotoResultToPhotos(_ photoresult: [PhotoResult]) -> [Photo] {
