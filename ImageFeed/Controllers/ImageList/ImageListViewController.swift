@@ -93,7 +93,7 @@ private extension ImageListViewController {
     }
     
     func showNetworkErrorAlert() {
-        let alertModel = AlertModel(title: "Что-то пошло не так(", message: "Не удалось войти  в систему", buttonText: "ОК")
+        let alertModel = AlertModel(title: "Что-то пошло не так(", message: "Попробуйте еще раз", buttonText: "ОК")
         alertPresenter.showAlert(alertModel)
     }
 }
@@ -156,7 +156,5 @@ extension ImageListViewController: ImageListCellDelegate {
             }
         }
     }
-    
-    
 }
 
