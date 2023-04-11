@@ -35,7 +35,7 @@ final class ProfileImageService {
                 self.avatarURL = imageURL
                 guard let avatarURL = self.avatarURL else { return }
                 completion(.success(avatarURL))
-                self.task = nil
+                
                 NotificationCenter.default
                     .post(name: ProfileImageService.didChangeNotification,
                           object: self,
@@ -45,15 +45,14 @@ final class ProfileImageService {
                 case NetworkError.httpStatusCode, NetworkError.urlSessionError:
                     print(error.localizedDescription)
                     completion(.failure(error))
-                    self.task = nil
                 case NetworkError.urlRequestError:
                     print(error)
                     completion(.failure(error))
-                    self.task = nil
                 default:
                     fatalError("Unexpected error occured")
                 }
             }
+            self.task = nil
         })
         
         DispatchQueue.main.async {
