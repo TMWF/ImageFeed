@@ -46,6 +46,7 @@ final class ImageListService {
                           userInfo: ["photos": self.photos])
             case .failure(let error):
                 switch error {
+                    // TODO: - 500 status code handling
                 case NetworkError.httpStatusCode, NetworkError.urlSessionError:
                     print(error.localizedDescription)
                 case NetworkError.urlRequestError:
