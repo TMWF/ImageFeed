@@ -9,6 +9,10 @@ import UIKit
 import WebKit
 
 final class WebViewController: UIViewController, WKNavigationDelegate, WebViewControllerProtocol {
+    func setProgressValue(_ newValue: CGFloat) {
+        progressView.progress = Float(newValue)
+    }
+    
     @IBOutlet private var webView: WKWebView!
     @IBOutlet private var progressView: UIProgressView!
     
