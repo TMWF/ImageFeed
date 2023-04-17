@@ -36,24 +36,13 @@ final class ProfileViewTests: XCTestCase {
     func testViewDidLoadUpdatesProfileDetailsAndAvatar() {
         // given
         let vc = ProfileViewControllerSpy()
-        let presenter = ProfileViewPresenter()
-        vc.presenter = presenter
-        presenter.view = vc
-        // when
-        presenter.viewDidLoad()
-        //then
-        XCTAssertTrue(vc.updateProfileDetailsCalled)
-    }
-    
-    func testViewDidLoadUpdatesAvatar() {
-        // given
-        let vc = ProfileViewControllerSpy()
         let presenter = ProfileViewPresenter(helper: ProfilePresenterHelperStub())
         vc.presenter = presenter
         presenter.view = vc
         // when
         presenter.viewDidLoad()
         //then
+        XCTAssertTrue(vc.updateProfileDetailsCalled)
         XCTAssertTrue(vc.updateAvatarCalled)
     }
 }
@@ -93,8 +82,11 @@ final class ProfileViewControllerSpy: ProfileViewControllerProtocol {
 }
 
 final class ProfilePresenterHelperStub: ProfilePresenterHelperProtocol {
-    func getAvatarURL() -> String? {
-        "apple.com"
+    func performLogout() {
+    }
+    
+    func getAvatarURL() -> URL? {
+        URL(string: "apple.com")
     }
 }
 

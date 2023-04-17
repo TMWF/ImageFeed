@@ -30,6 +30,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         guard let image else { fatalError("Failed to load image for logout button from assets") }
         let button = UIButton.systemButton(with: image, target: self, action: #selector(didTapLogoutButton))
         button.tintColor = .hexStringToUIColor(hex: "#F56B6C")
+        button.accessibilityIdentifier = "logoutButton"
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()

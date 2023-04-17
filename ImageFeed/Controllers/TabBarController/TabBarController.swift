@@ -14,7 +14,9 @@ final class TabBarController: UITabBarController {
         
         let imagesListViewController = storyboard.instantiateViewController(
             withIdentifier: "ImagesListViewController"
-        )
+        ) as! ImageListViewController
+        let imageListPresenter = ImageListPresenter(imageListService: ImageListService.shared)
+        imagesListViewController.configure(imageListPresenter)
         imagesListViewController.tabBarItem = UITabBarItem(
             title: nil,
             image: UIImage(named: "tab_editorial_active"),
