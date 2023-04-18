@@ -22,6 +22,7 @@ final class ImageListService: ImageListServiceProtocol {
     private var lastLoadedPage = 0
     private(set) var photos = [Photo]()
     private let tokenStorage = OAuth2TokenStorage()
+    private var fetchedAllPages = false
     
     private lazy var dateFormatter = {
         return ISO8601DateFormatter()
@@ -33,7 +34,7 @@ final class ImageListService: ImageListServiceProtocol {
     
     func fetchPhotosNextPage() {
         assert(Thread.isMainThread)
-        guard task == nil else { return }
+        guard task == nil && !fetchedAllPages else { return }
         lastLoadedPage += 1
         let nextPage = lastLoadedPage
     
@@ -57,8 +58,12 @@ final class ImageListService: ImageListServiceProtocol {
                           userInfo: ["photos": self.photos])
             case .failure(let error):
                 switch error {
-                    // TODO: - 500 status code handling
-                case NetworkError.httpStatusCode, NetworkError.urlSessionError:
+                case NetworkError.httpStatusCode(let code):
+                    if code >= 500 {
+                        fetchedAllPages = true
+                    }
+                    print(error.localizedDescription)
+                case NetworkError.urlSessionError:
                     print(error.localizedDescription)
                 case NetworkError.urlRequestError:
                     print(error)
