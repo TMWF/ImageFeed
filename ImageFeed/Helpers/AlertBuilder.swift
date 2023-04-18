@@ -47,13 +47,17 @@ public final class AlertBuilder {
     }
     
     @discardableResult
-    public func show() -> UIAlertController {
+    public func show(withAccessibilityIdentifier: String? = nil) -> UIAlertController {
         let alert = UIAlertController(title: alertProperties.title, message: alertProperties.message, preferredStyle: alertProperties.preferredStyle)
         if let onSuccess = onSuccess {
             alert.addAction(.init(title: alertActionSuccessProperties.title, style: alertActionSuccessProperties.alertActionStyle, handler: onSuccess))
         }
         if let onCancel = onCancel {
             alert.addAction(.init(title: alertActionCancelProperties.title, style: .cancel, handler: onCancel))
+        }
+        
+        if let withAccessibilityIdentifier {
+            alert.preferredAction?.accessibilityIdentifier = withAccessibilityIdentifier
         }
         viewController.present(alert, animated: true, completion: nil)
         return alert

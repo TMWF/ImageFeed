@@ -29,7 +29,7 @@ final class SplashViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        print("viewDidAppear")
         showAuthVCorStartFetchingUserInfo()
     }
 }
@@ -48,12 +48,10 @@ private extension SplashViewController {
     //MARK: - Navigation Logic
     func showAuthVCorStartFetchingUserInfo() {
         if (!OAuth2TokenStorage().token.isEmpty) && Constants.splashScreenFirstTimeAppeared {
-            print("Switching inside viewDidAppear")
             UIBlockingProgressHUD.show()
             fetchProfile(token: tokenStorage.token)
             Constants.splashScreenFirstTimeAppeared = false
         } else if Constants.splashScreenFirstTimeAppeared {
-            print("Segue inside viewDidAppear")
             let storyboard = UIStoryboard(name: "Main", bundle: .main)
             guard
                 let authVC = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else {

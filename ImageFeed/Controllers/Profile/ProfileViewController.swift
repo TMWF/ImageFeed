@@ -9,7 +9,14 @@ import UIKit
 import Kingfisher
 import WebKit
 
-final class ProfileViewController: UIViewController {
+protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfileViewPresenterProtocol? { get set }
+    
+    func updateAvatar(with url: URL)
+    func updateProfileDetails(with profile: Profile?)
+}
+
+final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
     private var avatarImageView: UIImageView = {
         let image = UIImage(systemName: "person.crop.circle.fill")
         guard let image else { fatalError("Failed to load profile picture from assets") }
@@ -23,6 +30,7 @@ final class ProfileViewController: UIViewController {
         guard let image else { fatalError("Failed to load image for logout button from assets") }
         let button = UIButton.systemButton(with: image, target: self, action: #selector(didTapLogoutButton))
         button.tintColor = .hexStringToUIColor(hex: "#F56B6C")
+        button.accessibilityIdentifier = "logoutButton"
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -55,36 +63,36 @@ final class ProfileViewController: UIViewController {
         return label
     }()
     
-    private let profileService = ProfileService.shared
-    private let profileImageService = ProfileImageService.shared
-    private var profileImageServiceObserver: NSObjectProtocol?
+    var presenter: ProfileViewPresenterProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .hexStringToUIColor(hex: "#1A1B22")
         addSubviews()
         activateConstraints()
-        
-        guard let profile = profileService.profile else { return }
-        updateProfileDetails(profile: profile)
-        initializeObserver()
-        updateAvatar()
+        presenter?.viewDidLoad()
+    }
+    
+    func updateAvatar(with url: URL) {
+        let processor = RoundCornerImageProcessor(cornerRadius: 20)
+        avatarImageView.kf.setImage(
+            with: url,
+            placeholder: UIImage(systemName: "person.crop.circle.fill"),
+            options: [.processor(processor),
+                .cacheSerializer(FormatIndicatedCacheSerializer.png)]
+        )
+        avatarImageView.kf.indicatorType = .activity
+    }
+    
+    func updateProfileDetails(with profile: Profile?) {
+        guard let profile else { return }
+        descriptionLabel.text = profile.bio
+        loginNameLabel.text = profile.loginName
+        userNameLabel.text = profile.name
     }
 }
 
 private extension ProfileViewController {
-    func initializeObserver() {
-        profileImageServiceObserver = NotificationCenter.default.addObserver(
-            forName: ProfileImageService.didChangeNotification,
-            object: nil,
-            queue: .main
-            )  { [weak self] _ in
-                guard let self else { return }
-                print("NOTIFICATION TRIGGERED SUCCSESSFULLY")
-                self.updateAvatar()
-            }
-    }
-    
     func addSubviews() {
         view.addSubview(avatarImageView)
         view.addSubview(logoutButton)
@@ -118,29 +126,6 @@ private extension ProfileViewController {
         ])
     }
     
-    
-    
-    func updateProfileDetails(profile: Profile) {
-        descriptionLabel.text = profile.bio
-        loginNameLabel.text = profile.loginName
-        userNameLabel.text = profile.name
-    }
-    
-    func updateAvatar() {
-        guard
-            let profileImageURL = profileImageService.avatarURL,
-            let url = URL(string: profileImageURL)
-        else { return }
-        let processor = RoundCornerImageProcessor(cornerRadius: 20)
-        avatarImageView.kf.setImage(
-            with: url,
-            placeholder: UIImage(systemName: "person.crop.circle.fill"),
-            options: [.processor(processor),
-                .cacheSerializer(FormatIndicatedCacheSerializer.png)]
-        )
-        avatarImageView.kf.indicatorType = .activity
-    }
-    
     @objc func didTapLogoutButton() {
         showConfirmationAlert()
     }
@@ -153,23 +138,8 @@ private extension ProfileViewController {
             .onSuccessAction(title: "Нет") {  _ in  }
             .onCancelAction(title: "Да") { [weak self] _ in
                 guard let self else { return }
-                self.performLogout()
+                self.presenter?.performLogout()
             }
             .show()
-    }
-    
-    func performLogout() {
-        OAuth2TokenStorage().token = ""
-        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-            records.forEach { record in
-                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
-            }
-        }
-        
-        Constants.splashScreenFirstTimeAppeared = true
-        guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
-        let splashVC = SplashViewController()
-        window.rootViewController = splashVC
     }
 }

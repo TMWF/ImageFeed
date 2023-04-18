@@ -7,12 +7,22 @@
 
 import Foundation
 
-final class ImageListService {
+protocol ImageListServiceProtocol {
+    var photos: [Photo] { get }
+    
+    func fetchPhotosNextPage()
+    func changeLike(photoID: String, isLiked: Bool, _ completion: @escaping (Result<Void, Error>) -> Void)
+}
+
+final class ImageListService: ImageListServiceProtocol {
     private struct EmptyBody: Decodable { }
+    
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
+    static let shared = ImageListService()
     private var lastLoadedPage = 0
     private(set) var photos = [Photo]()
     private let tokenStorage = OAuth2TokenStorage()
+    private var fetchedAllPages = false
     
     private lazy var dateFormatter = {
         return ISO8601DateFormatter()
@@ -20,9 +30,11 @@ final class ImageListService {
     
     private var task: URLSessionTask?
     
+    private init() { }
+    
     func fetchPhotosNextPage() {
         assert(Thread.isMainThread)
-        guard task == nil else { return }
+        guard task == nil && !fetchedAllPages else { return }
         lastLoadedPage += 1
         let nextPage = lastLoadedPage
     
@@ -46,7 +58,12 @@ final class ImageListService {
                           userInfo: ["photos": self.photos])
             case .failure(let error):
                 switch error {
-                case NetworkError.httpStatusCode, NetworkError.urlSessionError:
+                case NetworkError.httpStatusCode(let code):
+                    if code >= 500 {
+                        fetchedAllPages = true
+                    }
+                    print(error.localizedDescription)
+                case NetworkError.urlSessionError:
                     print(error.localizedDescription)
                 case NetworkError.urlRequestError:
                     print(error)
@@ -65,11 +82,11 @@ final class ImageListService {
 
     }
     
-    func changeLike(photoId: String, isLiked: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+    func changeLike(photoID: String, isLiked: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
         assert(Thread.isMainThread)
         
         var request = URLRequest.makeHTTPRequest(
-            path: "/photos/\(photoId)/like",
+            path: "/photos/\(photoID)/like",
             httpMethod: isLiked ? "DELETE" : "POST"
         )
         request.setValue("Bearer \(tokenStorage.token)", forHTTPHeaderField: "Authorization")
@@ -79,7 +96,7 @@ final class ImageListService {
             
             switch result {
             case .success(_):
-                if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+                if let index = self.photos.firstIndex(where: { $0.id == photoID }) {
                     let photo = self.photos[index]
                     
                     let newPhoto = Photo(
